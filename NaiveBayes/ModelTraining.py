@@ -109,3 +109,5 @@ def CM(x,y):
 CM(TRCM,'Train Confusion Matrix')
 
 CM(TECM,'Test Confusion Matrix')
+
+joblib.dump(mul_model, 'NaiveBayesModel.pkl')
