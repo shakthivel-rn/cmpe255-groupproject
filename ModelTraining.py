@@ -58,3 +58,14 @@ print("The best Alpha=",bestparam)
 
 mul_model = MultinomialNB(alpha=bestparam) #Building a Naive Bayes model with the best alpha
 mul_model.fit(x_tr,y_train)               #Training the model
+
+y_train_pred = mul_model.predict_proba(x_tr)[:,1]  #Prediction using the model(log probability of each class)
+y_test_pred = mul_model.predict_proba(x_te)[:,1]
+train_fpr, train_tpr, tr_thresholds = roc_curve(y_train, y_train_pred)
+test_fpr, test_tpr, te_thresholds = roc_curve(y_test, y_test_pred)   
+plt.plot(train_fpr, train_tpr, label="train AUC ="+str(auc(train_fpr, train_tpr)))
+plt.plot(test_fpr, test_tpr, label="test AUC ="+str(auc(test_fpr, test_tpr)))
+plt.legend()
+plt.title("AUC PLOTS")             #Plotting train and test AUC 
+plt.grid()
+plt.show()
