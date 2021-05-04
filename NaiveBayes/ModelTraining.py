@@ -69,3 +69,43 @@ plt.legend()
 plt.title("AUC PLOTS")             #Plotting train and test AUC 
 plt.grid()
 plt.show()
+
+trauc=round(auc(train_fpr, train_tpr),3)
+teauc=round(auc(test_fpr, test_tpr),3)
+print('Train AUC=',trauc)
+print('Test AUC=',teauc)
+
+def find_best_threshold(threshould, fpr, tpr):
+    t = threshould[np.argmax(tpr*(1-fpr))]      #finding the best threashold 
+    print("the maximum value of tpr*(1-fpr)", max(tpr*(1-fpr)), "for threshold", np.round(t,3))
+    return t
+
+def predict_with_best_t(proba, threshould):
+    predictions = []
+    for i in proba:
+        if i>=threshould:
+            predictions.append(1)
+        else:                                 #building a confusion matrix with the best threashold 
+            predictions.append(0)
+    return predictions
+
+best_t = find_best_threshold(tr_thresholds, train_fpr, train_tpr)
+TRCM=confusion_matrix(y_train, predict_with_best_t(y_train_pred, best_t))
+TECM=confusion_matrix(y_test, predict_with_best_t(y_test_pred, best_t))
+
+def CM(x,y):
+    labels = ['TN','FP','FN','TP']
+    group_counts = ["{0:0.0f}".format(value) for value in x.flatten()]
+                    
+    labels = [f"{v1}\n{v2}" for v1, v2 in
+    zip(labels,group_counts)]
+    labels = np.asarray(labels).reshape(2,2)       #Building a design for the confusion matrix
+    sns.heatmap(x, annot=labels, fmt='', cmap='BuPu')
+    plt.xlabel("Predicted")
+    plt.ylabel("Actual")
+    plt.title(y)
+    plt.plot()
+
+CM(TRCM,'Train Confusion Matrix')
+
+CM(TECM,'Test Confusion Matrix')
