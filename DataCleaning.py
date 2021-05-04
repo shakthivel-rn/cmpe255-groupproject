@@ -156,4 +156,6 @@ df['tweet'] = df['tweet'].str.replace(r'(ha)\1{1,}', r'\1')
 df.drop(df[df["tweet"] == ''].index, inplace=True)
 df = df.reset_index(drop=True)
 
+df.to_csv('Cleaned_Dataset.csv')
+
 print(df.head())
