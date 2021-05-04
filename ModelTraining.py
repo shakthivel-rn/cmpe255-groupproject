@@ -52,3 +52,9 @@ plt.ylabel("AUC")
 plt.title("Hyper parameter Vs AUC plot")  
 plt.grid()
 plt.show()
+
+bestparam=clf.best_params_['alpha']   #extracting the best hyperparameter
+print("The best Alpha=",bestparam)
+
+mul_model = MultinomialNB(alpha=bestparam) #Building a Naive Bayes model with the best alpha
+mul_model.fit(x_tr,y_train)               #Training the model
