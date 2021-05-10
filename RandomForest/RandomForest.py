@@ -38,13 +38,29 @@ from wordcloud import WordCloud
 plt.figure(figsize = (15,15)) 
 wc = WordCloud(max_words = 2000 , width = 1600 , height = 800).generate(" ".join(df[df.target == 0].tweet))
 plt.imshow(wc , interpolation = 'bilinear')
-plt.savefig('wordCloudForNagative')
+#plt.savefig('wordCloudForNagative')
 
 # generating word cloud for positive words
 plt.figure(figsize = (15,15)) 
 wc = WordCloud(max_words = 2000 , width = 1600 , height = 800).generate(" ".join(df[df.target == 1].tweet))
 plt.imshow(wc , interpolation = 'bilinear')
-plt.savefig('wordCloudForPositive')
+#plt.savefig('wordCloudForPositive')
+
+# get a word count per of text
+def word_count(words):
+    return len(words.split())
+
+# plot word count distribution for both positive and negative 
+df['word count'] = df['tweet'].apply(word_count)
+p = df['word count'][df.target == 1]
+n = df['word count'][df.target == 0]
+plt.figure(figsize=(12,6))
+plt.xlim(0,45)
+plt.xlabel('Word count')
+plt.ylabel('Frequency')
+g = plt.hist([p, n], color=['g','r'], alpha=0.5, label=['positive','negative'])
+plt.legend(loc='upper right')
+#plt.savefig('WordCountDistribution')
 
 vectorizer = TfidfVectorizer()
 vectorizer = TfidfVectorizer(min_df=10, ngram_range=(1, 3))
@@ -88,7 +104,7 @@ def model_Evaluate(model):
     plt.ylabel("Actual values"   , fontdict = {'size':14}, labelpad = 10)
     plt.title ("Confusion Matrix", fontdict = {'size':18}, pad = 20)
     plt.show()
-    plt.savefig('confusionMatrix')
+    #plt.savefig('confusionMatrix')
 
 
 
