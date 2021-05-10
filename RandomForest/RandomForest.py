@@ -111,3 +111,6 @@ def model_Evaluate(model):
 rf = RandomForestClassifier(n_estimators = 20, criterion = 'entropy', max_depth=50,random_state=42)
 rf.fit(x_tr, y_train)
 model_Evaluate(rf)
+
+
+joblib.dump(rf, 'RandomForest.pkl')
