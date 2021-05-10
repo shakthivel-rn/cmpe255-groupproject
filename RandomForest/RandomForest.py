@@ -58,9 +58,26 @@ def model_Evaluate(model):
     print("---------------------")
     cf_matrix = confusion_matrix(y_test, y_pred)
     print('conf',cf_matrix)
+    print('\n\n')
+
+    categories  = ['Negative','Positive']
+    group_names = ['True Neg','False Pos', 'False Neg','True Pos']
+    group_percentages = ['{0:.2%}'.format(value) for value in cf_matrix.flatten() / np.sum(cf_matrix)]
+
+    labels = [f'{v1}\n{v2}' for v1, v2 in zip(group_names,group_percentages)]
+    labels = np.asarray(labels).reshape(2,2)
+
+    sns.heatmap(cf_matrix, annot = labels, cmap = 'Blues',fmt = '',
+                xticklabels = categories, yticklabels = categories)
+
+    plt.xlabel("Predicted values", fontdict = {'size':14}, labelpad = 10)
+    plt.ylabel("Actual values"   , fontdict = {'size':14}, labelpad = 10)
+    plt.title ("Confusion Matrix", fontdict = {'size':18}, pad = 20)
+    plt.show()
+    plt.savefig('confusionMatrix')
 
 
-#rf = RandomForestClassifier(n_estimators = 20, criterion = 'entropy', max_depth=50,random_state=42)
-rf = RandomForestClassifier(n_estimators = 400, min_samples_split=10,min_samples_leaf=1,max_features='sqrt',max_depth= 100, bootstrap= True,random_state = 42)
+
+rf = RandomForestClassifier(n_estimators = 20, criterion = 'entropy', max_depth=50,random_state=42)
 rf.fit(x_tr, y_train)
 model_Evaluate(rf)
