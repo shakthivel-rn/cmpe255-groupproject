@@ -32,6 +32,20 @@ print('------')
 print(df.shape)
 print('\n\n')
 
+# generating word cloud for negative words
+from wordcloud import WordCloud
+
+plt.figure(figsize = (15,15)) 
+wc = WordCloud(max_words = 2000 , width = 1600 , height = 800).generate(" ".join(df[df.target == 0].tweet))
+plt.imshow(wc , interpolation = 'bilinear')
+plt.savefig('wordCloudForNagative')
+
+# generating word cloud for positive words
+plt.figure(figsize = (15,15)) 
+wc = WordCloud(max_words = 2000 , width = 1600 , height = 800).generate(" ".join(df[df.target == 1].tweet))
+plt.imshow(wc , interpolation = 'bilinear')
+plt.savefig('wordCloudForPositive')
+
 vectorizer = TfidfVectorizer()
 vectorizer = TfidfVectorizer(min_df=10, ngram_range=(1, 3))
 vectorizer.fit(X_train)      
